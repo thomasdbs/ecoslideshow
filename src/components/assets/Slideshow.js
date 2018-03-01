@@ -7,7 +7,7 @@ class Slideshow extends Component {
   state = {
     slides:[],
     slideshow:null,
-    loading:false
+    loading:true
   }
 
   componentWillMount() {
@@ -18,8 +18,15 @@ class Slideshow extends Component {
     // this.getSlideshow('japan_slideshow')
   }
 
+  componentDidUpdate(prevProps,prevState) {
+    if (this.state.loading === true && this.state.slideshow !== null) {
+      // alert('test')
+      this.getSlideshow(this.state.slideshow)
+    }
+  }
+
   onSubmit = (event) => {
-    this.getSlideshow(this.state.slideshow)
+    localStorage.setItem("ecoslideshow_slideshow", this.state.slideshow)
     this.setState({loading:true})
 
     event.preventDefault()
@@ -78,6 +85,13 @@ class Slideshow extends Component {
   }
 
   componentDidMount() {
+    // localStorage.removeItem("ecoslideshow_slideshow")
+    const isSlideshowVisited = localStorage.getItem("ecoslideshow_slideshow")
+    if (isSlideshowVisited !== null) {
+      this.setState({ slideshow: isSlideshowVisited })
+    }else {
+      this.setState({ loading:false })
+    }
     for (var i=1; i <= this.state.slides; i++){
       document.querySelector('.slider__indicators').innerHTML += `<div class="slider__indicator" data-slide="${i}"></div>`
     }

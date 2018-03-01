@@ -20,7 +20,7 @@ class Admin extends Component {
       }else {
         this.setState({ authenticate:true, loading:false })
       }
-    }, 1000);
+    }, 500);
   }
 
   onSubmit = (event) => {
