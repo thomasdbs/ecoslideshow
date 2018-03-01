@@ -8,7 +8,19 @@ class Admin extends Component {
     email: '',
     password: '',
     error: null,
-    authenticate:false
+    authenticate:false,
+    loading:true
+  }
+
+  componentWillMount() {
+    setTimeout( () => {
+      const login = localStorage.getItem("ecoslideshow_login")
+      if (login === null) {
+        this.setState({ loading:false })
+      }else {
+        this.setState({ authenticate:true, loading:false })
+      }
+    }, 1000);
   }
 
   onSubmit = (event) => {
@@ -20,6 +32,7 @@ class Admin extends Component {
     auth.doSignInWithEmailAndPassword(email, password)
     .then(() => {
       this.setState({ authenticate:true })
+      localStorage.setItem("ecoslideshow_login", email)
     })
     .catch(error => {
       alert(error)
@@ -28,35 +41,43 @@ class Admin extends Component {
     event.preventDefault()
   }
 
-  componentWillMount() {
-    this.setState({ authenticate:true })
-  }
+  // componentWillMount() {
+  //   this.setState({ authenticate:true })
+  // }
 
   render() {
 
-    if (this.state.authenticate === false) {
+    if (this.state.authenticate === false && this.state.loading === false) {
       return (
-        <form onSubmit={this.onSubmit}>
-          <input
-            value={this.state.email}
-            onChange={event => this.setState({email: event.target.value})}
-            type="text"
-            placeholder="Email Address"
-          />
-          <input
-            value={this.state.password}
-            onChange={event => this.setState({password: event.target.value})}
-            type="password"
-            placeholder="Password"
-          />
-          <button type="submit">
-            Sign In
-          </button>
-        </form>
+        <div className="admin_background">
+          <form className="admin_signin" onSubmit={this.onSubmit}>
+            <div>
+              <div value={this.state.email} onChange={event => this.setState({email: event.target.value})} class="group">
+                <input type="text" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Email Address</label>
+              </div>
+              <div class="group">
+                <input value={this.state.password} onChange={event => this.setState({password: event.target.value})} type="password" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Password</label>
+              </div><br />
+              <button type="submit">
+                Sign In
+              </button>
+            </div>
+          </form>
+        </div>
+      )
+    }else if(this.state.authenticate === true && this.state.loading === false) {
+      return (
+        <Slideshow admin={true} />
       )
     }else {
       return (
-        <Slideshow admin={true} />
+        <div>Waiting</div>
       )
     }
 
