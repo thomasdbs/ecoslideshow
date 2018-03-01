@@ -32,23 +32,27 @@ class Admin extends Component {
 
     if (this.state.authenticate === false) {
       return (
-        <form onSubmit={this.onSubmit}>
-          <input
-            value={this.state.email}
-            onChange={event => this.setState({email: event.target.value})}
-            type="text"
-            placeholder="Email Address"
-          />
-          <input
-            value={this.state.password}
-            onChange={event => this.setState({password: event.target.value})}
-            type="password"
-            placeholder="Password"
-          />
-          <button type="submit">
-            Sign In
-          </button>
-        </form>
+        <div className="admin_background">
+          <form className="admin_signin" onSubmit={this.onSubmit}>
+            <div>
+              <div value={this.state.email} onChange={event => this.setState({email: event.target.value})} class="group">      
+                <input type="text" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Email Address</label>
+              </div>
+              <div class="group">      
+                <input value={this.state.password} onChange={event => this.setState({password: event.target.value})} type="password" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Password</label>
+              </div><br />
+              <button type="submit">
+                Sign In
+              </button>
+            </div>
+          </form>
+        </div>       
       )
     }else {
       return (
