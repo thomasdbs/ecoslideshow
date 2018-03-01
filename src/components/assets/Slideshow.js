@@ -5,14 +5,24 @@ import { database } from '../firebase'
 class Slideshow extends Component {
 
   state = {
-    slides:[]
+    slides:[],
+    slideshow:null,
+    loading:false
   }
 
   componentWillMount() {
-    // this.addSlideshow("Japon")
-    // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'First Firebase Slide')
-    // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'Second Firebase Slide')
-    this.getSlideshow('-L6WFjXM2kEToDpUyNXY')
+    // this.addSlideshow("japan_slideshow","Japan")
+    // this.addSlide('japan_slideshow', 'First Firebase Slide')
+    // this.addSlide('japan_slideshow', 'Second Firebase Slide')
+    // this.addSlide('japan_slideshow', 'Third Firebase Slide')
+    // this.getSlideshow('japan_slideshow')
+  }
+
+  onSubmit = (event) => {
+    this.getSlideshow(this.state.slideshow)
+    this.setState({loading:true})
+
+    event.preventDefault()
   }
 
   getAllSlideshows = () => {
@@ -22,15 +32,22 @@ class Slideshow extends Component {
   }
 
   getSlideshow = (id) => {
-    database.ref(`/${id}`).once('value').then( (dataSnapshot) => {
-      this.setState({ slides: dataSnapshot.child('slides').val() })
+    database.ref(`/${id}`).once('value').then( (data) => {
+      if (data.exists() === true) {
+        setTimeout( () => {
+          this.setState({ slides: data.child('slides').val(), loading:false })
+        }, 1000);
+      }else {
+        this.setState({ loading:false })
+        alert('erreur, merci de saisir un ID valide')
+      }
     })
   }
 
-  addSlideshow = (name) => {
-    const key = database.ref('/').push().key
-    const model = this.slideshowStructure(key, name)
-    return database.ref('/'+ key).set(model)
+  addSlideshow = (pseudo, name) => {
+    database.ref('/').push().pseudo
+    const model = this.slideshowStructure(pseudo, name)
+    return database.ref('/'+ pseudo).set(model)
   }
 
   slideshowStructure = (id, name) => ({
@@ -103,11 +120,11 @@ class Slideshow extends Component {
 
   render() {
 
-    if (Object.keys(this.state.slides).length === 0) {
+    if (Object.keys(this.state.slides).length === 0 && this.state.loading === true) {
       return (
         <div>Waiting</div>
       )
-    }else {
+    }else if(Object.keys(this.state.slides).length > 0 && this.state.loading === false) {
 
       let i = 0
       const posts = Object
@@ -122,6 +139,25 @@ class Slideshow extends Component {
           <div className="slider__indicators"></div>
         </div>
 
+      )
+    }else {
+      return (
+        <div className="admin_background">
+          <form className="admin_signin" onSubmit={this.onSubmit}>
+            <div>
+              <div value={this.state.email} onChange={event => this.setState({slideshow: event.target.value})} className="group">
+                <input type="text" required />
+                <span className="highlight"></span>
+                <span className="bar"></span>
+                <label>Slideshow ID</label>
+              </div>
+              <br />
+              <button type="submit">
+                Go
+              </button>
+            </div>
+          </form>
+        </div>
       )
     }
 
