@@ -11,7 +11,7 @@ class Slide extends Component {
 
     let labelH1 = this.props.details.text
     if(this.props.admin === true){
-      labelH1 = `<input class="slider_input" type="text" placeholder="contenu" value="${this.props.details.text}" />`
+      labelH1 = `<input class="slider__input" type="text" placeholder="contenu" maxlength="28" value="${this.props.details.text}" />`
     }
 
     return (
