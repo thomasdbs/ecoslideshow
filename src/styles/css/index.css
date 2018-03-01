@@ -56,6 +56,16 @@ body {
     font-family: "Heebo", sans-serif;
     opacity: 0;
     transition: opacity 450ms; }
+    .slider_input{
+      background: none;
+      border: none;
+      font-weight: 900;
+      font-size: 9vh;
+      line-height: 0.85;
+      margin-bottom: 0.75vh;
+      pointer-events: none;
+      text-shadow: 0 0.375vh 0.75vh rgba(0, 0, 0, 0.1);
+    }
     .slider__content h1 {
       font-weight: 900;
       font-size: 9vh;

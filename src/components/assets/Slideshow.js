@@ -9,12 +9,10 @@ class Slideshow extends Component {
   }
 
   componentWillMount() {
-    if (this.props.admin === true) {
-      // this.addSlideshow("Japon")
-      // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'First Firebase Slide')
-      // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'Second Firebase Slide')
-      this.getSlideshow('-L6WFjXM2kEToDpUyNXY')
-    }
+    // this.addSlideshow("Japon")
+    // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'First Firebase Slide')
+    // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'Second Firebase Slide')
+    this.getSlideshow('-L6WFjXM2kEToDpUyNXY')
   }
 
   getAllSlideshows = () => {
@@ -114,7 +112,7 @@ class Slideshow extends Component {
       let i = 0
       const posts = Object
       .keys(this.state.slides)
-      .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} />)
+      .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} admin={this.props.admin} />)
       ;
 
       return (

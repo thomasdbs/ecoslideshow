@@ -9,6 +9,11 @@ class Slide extends Component {
       isActive = 'slider__slide slider__slide--active'
     }
 
+    let labelH1 = this.props.details.text
+    if(this.props.admin === true){
+      labelH1 = `<input class="slider_input" type="text" placeholder="contenu" value="${this.props.details.text}" />`
+    }
+
     return (
 
         <div className={isActive} data-slide={this.props.i+1}>
@@ -17,7 +22,7 @@ class Slide extends Component {
           </div>
           <div className="slider__inner">
             <div className="slider__content">
-              <h1>Slide <br /> {this.props.details.text}</h1>
+              <div dangerouslySetInnerHTML={{__html: labelH1}}></div>
               <a onClick={ () => this.props.changeSlide()} className="go-to-next">next</a>
             </div>
           </div>
