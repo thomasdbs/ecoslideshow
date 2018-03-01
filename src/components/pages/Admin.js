@@ -28,6 +28,10 @@ class Admin extends Component {
     event.preventDefault()
   }
 
+  componentWillMount() {
+    this.setState({ authenticate:true })
+  }
+
   render() {
 
     if (this.state.authenticate === false) {
@@ -52,7 +56,7 @@ class Admin extends Component {
       )
     }else {
       return (
-        <Slideshow />
+        <Slideshow admin={true} />
       )
     }
 

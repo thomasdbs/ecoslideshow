@@ -11,7 +11,7 @@ class Slide extends Component {
 
     return (
 
-        <div className={isActive} data-slide={this.props.details.slide}>
+        <div className={isActive} data-slide={this.props.i+1}>
           <div className="slider__wrap slider__wrap--hacked">
             <div className="slider__back"></div>
           </div>

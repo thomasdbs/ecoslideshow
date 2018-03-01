@@ -1,15 +1,65 @@
 import React, { Component } from 'react'
 import Slide from './Slide'
+import { database } from '../firebase'
 
 class Slideshow extends Component {
 
   state = {
-    slides:{
-      one: { slide:1, picture:'null', text:'One' },
-      two: { slide:2, picture:'null', text:'Two' },
-      three: { slide:3, picture:'null', text:'Three' }
-    },
-    lastScrollTop:0
+    slides:[]
+  }
+
+  componentWillMount() {
+    if (this.props.admin === true) {
+      // this.addSlideshow("Japon")
+      // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'First Firebase Slide')
+      // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'Second Firebase Slide')
+      this.getSlideshow('-L6WFjXM2kEToDpUyNXY')
+    }
+  }
+
+  getAllSlideshows = () => {
+    database.ref('/').once('value').then(function(dataSnapshot) {
+      alert(JSON.stringify(dataSnapshot))
+    })
+  }
+
+  getSlideshow = (id) => {
+    database.ref(`/${id}`).once('value').then( (dataSnapshot) => {
+      this.setState({ slides: dataSnapshot.child('slides').val() })
+    })
+  }
+
+  addSlideshow = (name) => {
+    const key = database.ref('/').push().key
+    const model = this.slideshowStructure(key, name)
+    return database.ref('/'+ key).set(model)
+  }
+
+  slideshowStructure = (id, name) => ({
+    id: id,
+    name: name,
+    slides: []
+  })
+
+  addSlide = (id, name) => {
+    return new Promise((resolve, reject) => {
+      database.ref(`/${id}`).once('value').then((slide) => {
+        let slides = slide.val().slides || []
+        let key = database.ref(`/${id}`).push().key
+        slides.push(this.slideStructure(key, 'test.png', name))
+        database.ref(`/${id}/slides`).set(slides)
+        .then( res => {resolve(res)})
+        .catch( error => {reject(error)})
+      })
+    })
+  }
+
+  slideStructure = (id, picture, name) => {
+    return {
+      id: id,
+      picture: picture,
+      text: name
+    }
   }
 
   componentDidMount() {
@@ -17,27 +67,11 @@ class Slideshow extends Component {
       document.querySelector('.slider__indicators').innerHTML += `<div class="slider__indicator" data-slide="${i}"></div>`
     }
     window.addEventListener("keydown", this.onKeyPress)
-    // window.addEventListener("scroll", this.onScroll)
   }
 
   componentWillUnmount() {
     window.removeEventListener("keydown", this.onKeyPress)
-    // window.removeEventListener("scroll", this.onScroll)
-
   }
-
-  // onScroll = (event) => {
-  //   var st = window.pageYOffset || document.documentElement.scrollTop
-  //   if (st > this.state.lastScrollTop){
-  //     // downscroll code
-  //   } else {
-  //     // upscroll code
-  //   }
-  //   if (document.documentElement.scrollTop <= 50) {
-  //     // alert('top')
-  //   }
-  //   this.setState({ lastScrollTop:st })
-  // }
 
   onKeyPress = (event) => {
     if(event.key === 'ArrowDown' || event.key === 'ArrowLeft'){
@@ -71,26 +105,27 @@ class Slideshow extends Component {
 
   render() {
 
-    let i = 0
-    const posts = Object
-    .keys(this.state.slides)
-    .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} />)
-    ;
+    if (Object.keys(this.state.slides).length === 0) {
+      return (
+        <div>Waiting</div>
+      )
+    }else {
 
-    // const posts = () => {
-    //   for (var i = 0; i < this.state.slides; i++) {
-    //     return i
-    //   }
-    // }
+      let i = 0
+      const posts = Object
+      .keys(this.state.slides)
+      .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} />)
+      ;
 
-    return (
+      return (
 
-      <div className="slider">
-        {posts}
-        <div className="slider__indicators"></div>
-      </div>
+        <div className="slider">
+          {posts}
+          <div className="slider__indicators"></div>
+        </div>
 
-    )
+      )
+    }
 
   }
 
