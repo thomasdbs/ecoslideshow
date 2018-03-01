@@ -9,12 +9,10 @@ class Slideshow extends Component {
   }
 
   componentWillMount() {
-    if (this.props.admin === true) {
       // this.addSlideshow("Japon")
       // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'First Firebase Slide')
       // this.addSlide('-L6WFjXM2kEToDpUyNXY', 'Second Firebase Slide')
       this.getSlideshow('-L6WFjXM2kEToDpUyNXY')
-    }
   }
 
   getAllSlideshows = () => {

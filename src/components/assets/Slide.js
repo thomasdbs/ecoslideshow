@@ -17,7 +17,7 @@ class Slide extends Component {
           </div>
           <div className="slider__inner">
             <div className="slider__content">
-              <h1>Slide <br /> {this.props.details.text}</h1>
+              <h1>{this.props.details.text}</h1>
               <a onClick={ () => this.props.changeSlide()} className="go-to-next">next</a>
             </div>
           </div>
