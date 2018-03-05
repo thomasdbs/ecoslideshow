@@ -1,35 +1,16 @@
 import React, { Component } from 'react'
 import Slide from './Slide'
 import { database } from '../firebase'
+import { Redirect } from 'react-router'
 
 class Slideshow extends Component {
 
   state = {
     slides:[],
     slideshow:null,
-    loading:true
-  }
-
-  componentWillMount() {
-    // this.addSlideshow("japan_slideshow","Japan")
-    // this.addSlide('japan_slideshow', 'First Firebase Slide')
-    // this.addSlide('japan_slideshow', 'Second Firebase Slide')
-    // this.addSlide('japan_slideshow', 'Third Firebase Slide')
-    // this.getSlideshow('japan_slideshow')
-  }
-
-  componentDidUpdate(prevProps,prevState) {
-    if (this.state.loading === true && this.state.slideshow !== null) {
-      // alert('test')
-      this.getSlideshow(this.state.slideshow)
-    }
-  }
-
-  onSubmit = (event) => {
-    localStorage.setItem("ecoslideshow_slideshow", this.state.slideshow)
-    this.setState({loading:true})
-
-    event.preventDefault()
+    loading:true,
+    redirectToHome:false,
+    redirectToAdmin:false
   }
 
   getAllSlideshows = () => {
@@ -41,24 +22,28 @@ class Slideshow extends Component {
   getSlideshow = (id) => {
     database.ref(`/${id}`).once('value').then( (data) => {
       if (data.exists() === true) {
-        setTimeout( () => {
-          this.setState({ slides: data.child('slides').val(), loading:false })
-        }, 1000);
+        this.setState({ slides: data.child('slides').val(), loading:false })
       }else {
-        this.setState({ loading:false })
-        alert('erreur, merci de saisir un ID valide')
+        if (this.props.admin === true) {
+          localStorage.removeItem("ecoslideshow_admin_token")
+          this.setState({ redirectToAdmin:true })
+        }else {
+          localStorage.removeItem("ecoslideshow_token")
+          this.setState({ redirectToHome:true })
+        }
       }
     })
   }
 
-  addSlideshow = (pseudo, name) => {
+  addSlideshow = (pseudo, admin_password, name) => {
     database.ref('/').push().pseudo
-    const model = this.slideshowStructure(pseudo, name)
+    const model = this.slideshowStructure(admin_password, pseudo, name)
     return database.ref('/'+ pseudo).set(model)
   }
 
-  slideshowStructure = (id, name) => ({
-    id: id,
+  slideshowStructure = (admin_password, pseudo, name) => ({
+    admin_password: admin_password,
+    id: pseudo,
     name: name,
     slides: []
   })
@@ -66,7 +51,7 @@ class Slideshow extends Component {
   addSlide = (id, name) => {
     return new Promise((resolve, reject) => {
       database.ref(`/${id}`).once('value').then((slide) => {
-        let slides = slide.val().slides || []
+        let slides = slide.child('slides').val() || []
         let key = database.ref(`/${id}`).push().key
         slides.push(this.slideStructure(key, 'test.png', name))
         database.ref(`/${id}/slides`).set(slides)
@@ -85,13 +70,7 @@ class Slideshow extends Component {
   }
 
   componentDidMount() {
-    // localStorage.removeItem("ecoslideshow_slideshow")
-    const isSlideshowVisited = localStorage.getItem("ecoslideshow_slideshow")
-    if (isSlideshowVisited !== null) {
-      this.setState({ slideshow: isSlideshowVisited })
-    }else {
-      this.setState({ loading:false })
-    }
+    this.getSlideshow(this.props.slideshow)
     for (var i=1; i <= this.state.slides; i++){
       document.querySelector('.slider__indicators').innerHTML += `<div class="slider__indicator" data-slide="${i}"></div>`
     }
@@ -134,45 +113,36 @@ class Slideshow extends Component {
 
   render() {
 
-    if (Object.keys(this.state.slides).length === 0 && this.state.loading === true) {
+    if (this.state.redirectToHome === true) {
       return (
-        <div>Waiting</div>
+        <Redirect to="/" />
       )
-    }else if(Object.keys(this.state.slides).length > 0 && this.state.loading === false) {
-
-      let i = 0
-      const posts = Object
-      .keys(this.state.slides)
-      .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} admin={this.props.admin} />)
-      ;
-
+    }else if (this.state.redirectToAdmin === true) {
       return (
-
-        <div className="slider">
-          {posts}
-          <div className="slider__indicators"></div>
-        </div>
-
+        <Redirect to="/admin" />
       )
     }else {
-      return (
-        <div className="admin_background">
-          <form className="admin_signin" onSubmit={this.onSubmit}>
-            <div>
-              <div value={this.state.email} onChange={event => this.setState({slideshow: event.target.value})} className="group">
-                <input type="text" required />
-                <span className="highlight"></span>
-                <span className="bar"></span>
-                <label>Slideshow ID</label>
-              </div>
-              <br />
-              <button type="submit">
-                Go
-              </button>
-            </div>
-          </form>
-        </div>
-      )
+      if (Object.keys(this.state.slides).length === 0 && this.state.loading === true) {
+        return (
+          <div>Waiting</div>
+        )
+      }else {
+
+        let i = 0
+        const posts = Object
+        .keys(this.state.slides)
+        .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} admin={this.props.admin} />)
+        ;
+
+        return (
+
+          <div className="slider">
+            {posts}
+            <div className="slider__indicators"></div>
+          </div>
+
+        )
+      }
     }
 
   }
