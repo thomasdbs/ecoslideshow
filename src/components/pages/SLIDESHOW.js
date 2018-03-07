@@ -24,15 +24,15 @@ class SLIDESHOW extends Component {
 
       if (isAlreadyVisitedAdmin !== null && isAlreadyVisitedAdmin === 'THIS_IS_THE_ECOSLIDESHOW_ADMIN_TOKEN') {
         this.setState({ loading:false, admin:true })
-        alert('1')
+        // alert('1')
       }else {
         if (this.props.location.state && this.props.location.state.admin_token === 'THIS_IS_THE_ECOSLIDESHOW_ADMIN_TOKEN') {
           localStorage.setItem("ecoslideshow_admin_token",this.props.location.state.admin_token)
           this.setState({ loading:false , admin:true})
-          alert('2')
+          // alert('2')
         }else {
           this.setState({ loading:false, redirectToAdmin:true })
-          alert('3')
+          // alert('3')
         }
       }
 
@@ -42,15 +42,15 @@ class SLIDESHOW extends Component {
 
       if (isAlreadyVisited !== null && isAlreadyVisited === 'THIS_IS_THE_ECOSLIDESHOW_TOKEN') {
         this.setState({ loading:false })
-        alert('4')
+        // alert('4')
       }else {
         if (this.props.location.state && this.props.location.state.token === 'THIS_IS_THE_ECOSLIDESHOW_TOKEN') {
           localStorage.setItem("ecoslideshow_token",this.props.location.state.token)
           this.setState({ loading:false })
-          alert('5')
+          // alert('5')
         }else {
           this.setState({ loading:false, redirectToHome:true })
-          alert('6')
+          // alert('6')
         }
       }
 

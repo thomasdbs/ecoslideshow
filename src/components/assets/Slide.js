@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { database } from '../firebase'
+import { uploadFile } from './adminFunctions/UploadFile'
+import { deleteSlide } from './adminFunctions/DeleteSlide'
 
 class Slide extends Component {
 
@@ -7,44 +8,7 @@ class Slide extends Component {
     picture:null
   }
 
-  uploadFile = () => {
-    const filesSelected = document.querySelector('#inputFileToLoad').files;
-    if (filesSelected.length > 0) {
-      const fileToLoad = filesSelected[0];
 
-      const fileReader = new FileReader();
-
-      fileReader.onload = (fileLoadedEvent) => {
-        var srcData = fileLoadedEvent.target.result;
-        this.addSlide('japan_slideshow', srcData, 'Fourth Firebase Slide')
-        // var newImage = document.createElement('img');
-        // newImage.src = srcData;
-        // document.getElementById("imgTest").innerHTML = newImage.outerHTML;
-      }
-      fileReader.readAsDataURL(fileToLoad);
-    }
-  }
-
-  addSlide = (id, picture, name) => {
-    return new Promise((resolve, reject) => {
-      database.ref(`/${id}`).once('value').then((slide) => {
-        let slides = slide.child('slides').val() || []
-        let key = database.ref(`/${id}`).push().key
-        slides.push(this.slideStructure(key, picture, name))
-        database.ref(`/${id}/slides`).set(slides)
-        .then( res => {resolve(res)})
-        .catch( error => {reject(error)})
-      })
-    })
-  }
-
-  slideStructure = (id, picture, name) => {
-    return {
-      id: id,
-      picture: picture,
-      text: name
-    }
-  }
 
   render() {
 
@@ -66,7 +30,8 @@ class Slide extends Component {
           </div>
           <div className="slider__inner"  style={{ backgroundImage: `url(${this.props.details.picture})` }}>
             <div className="slider__content">
-              <input id="inputFileToLoad" type="file" onChange={() => this.uploadFile()}/>
+              <input id="inputFileToLoad" type="file" onChange={() => uploadFile()}/>
+              <button onClick={() => deleteSlide(this.props.i)}>D</button>
               <div dangerouslySetInnerHTML={{__html: labelH1}}></div>
               <a onClick={ () => this.props.changeSlide()} className="go-to-next">next</a>
             </div>
