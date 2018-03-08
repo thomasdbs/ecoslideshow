@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router'
+import NavItem from './NavItem'
 
 class UserNavbar extends Component {
 
   render() {
 
-      return (
-        <nav>
-          <button onClick={() => this.props.goHome()}>
-            <i className="ion-ios-home-outline"></i>
-          </button>
-        </nav>
-      )
+    return (
+      <nav>
+
+          <NavItem
+            function={this.props.goHome}
+            tooltip="Accueil"
+            icon="ion-ios-home-outline"
+          />
+
+      </nav>
+    )
 
   }
 

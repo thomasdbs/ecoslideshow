@@ -11,7 +11,8 @@ class Slideshow extends Component {
     slideshow:null,
     loading:true,
     redirectToHome:false,
-    redirectToAdmin:false
+    redirectToAdmin:false,
+    addSlide:false
   }
 
   getAllSlideshows = () => {
@@ -62,10 +63,12 @@ class Slideshow extends Component {
   }
 
   onKeyPress = (event) => {
-    if(event.key === 'ArrowDown' || event.key === 'ArrowLeft'){
-      this.changeSlide(true);
-    }else if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
-      this.changeSlide()
+    if (this.state.addSlide === false) {
+      if(event.key === 'ArrowDown' || event.key === 'ArrowLeft'){
+        this.changeSlide(true);
+      }else if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+        this.changeSlide()
+      }
     }
   }
 
@@ -75,19 +78,23 @@ class Slideshow extends Component {
   }
 
   changeSlide = ( previous = false) => {
-    let currentSlide = Number(document.querySelector('.slider__slide--active').dataset.slide)
-    if (previous === true) {
-      currentSlide --
-      if (currentSlide < 1) {
-        currentSlide = Object.keys(this.state.slides).length
+
+    if (this.state.addSlide === false) {
+      let currentSlide = Number(document.querySelector('.slider__slide--active').dataset.slide)
+      if (previous === true) {
+        currentSlide --
+        if (currentSlide < 1) {
+          currentSlide = Object.keys(this.state.slides).length
+        }
+      }else {
+        currentSlide ++
+        if (currentSlide > Object.keys(this.state.slides).length) {
+          currentSlide = 1
+        }
       }
-    }else {
-      currentSlide ++
-      if (currentSlide > Object.keys(this.state.slides).length) {
-        currentSlide = 1
-      }
+      this.goToSlide(currentSlide)
     }
-    this.goToSlide(currentSlide)
+
   }
 
   goHome = () => {
@@ -97,6 +104,14 @@ class Slideshow extends Component {
     }else {
       this.setState({ redirectToHome:true })
     }
+  }
+
+  addSlide = () => {
+    this.setState({ addSlide:true })
+  }
+
+  deleteNewSlide = () => {
+    this.setState({ addSlide:false })
   }
 
   render() {
@@ -121,6 +136,7 @@ class Slideshow extends Component {
         .keys(this.state.slides)
         .map(key =>
           <Slide
+            addSlide={this.addSlide}
             numberOfSlides={Object.keys(this.state.slides).length}
             i={i++}
             key={key}
@@ -128,6 +144,7 @@ class Slideshow extends Component {
             changeSlide={this.changeSlide}
             admin={this.props.admin}
             goHome={this.goHome}
+            deleteNewSlide={this.deleteNewSlide}
           />
         )
 

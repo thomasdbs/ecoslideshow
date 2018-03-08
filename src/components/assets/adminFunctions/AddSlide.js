@@ -7,6 +7,8 @@ export const addSlide = (picture, name, numberOfSlides) => {
 
   const slidePositionKey = numberOfSlides + unicID
 
-  return database.ref(`/${localStorage.getItem("ecoslideshow_slideshow")}/slides/${slidePositionKey}`).set({ id:slidePositionKey, picture:picture, text:name })
+  database.ref(`/${localStorage.getItem("ecoslideshow_slideshow")}/slides/${slidePositionKey}`).set({ id:slidePositionKey, picture:picture, text:name }).then( (data) => {
+    window.location.reload()
+  })
 
 }
