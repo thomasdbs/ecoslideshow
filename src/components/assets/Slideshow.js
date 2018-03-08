@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Slide from './Slide'
 import { database } from '../firebase'
 import { Redirect } from 'react-router'
+import UserNavbar from './UserNavbar'
+import AdminNavbar from './AdminNavbar'
 
 class Slideshow extends Component {
 
@@ -48,27 +50,6 @@ class Slideshow extends Component {
     slides: []
   })
 
-  addSlide = (id, name) => {
-    return new Promise((resolve, reject) => {
-      database.ref(`/${id}`).once('value').then((slide) => {
-        let slides = slide.child('slides').val() || []
-        let key = database.ref(`/${id}`).push().key
-        slides.push(this.slideStructure(key, 'test.png', name))
-        database.ref(`/${id}/slides`).set(slides)
-        .then( res => {resolve(res)})
-        .catch( error => {reject(error)})
-      })
-    })
-  }
-
-  slideStructure = (id, picture, name) => {
-    return {
-      id: id,
-      picture: picture,
-      text: name
-    }
-  }
-
   componentDidMount() {
     this.getSlideshow(this.props.slideshow)
     for (var i=1; i <= this.state.slides; i++){
@@ -110,6 +91,14 @@ class Slideshow extends Component {
     this.goToSlide(currentSlide)
   }
 
+  goHome = () => {
+    localStorage.removeItem("ecoslideshow_slideshow")
+    if (this.props.admin === true) {
+      this.setState({ redirectToAdmin:true })
+    }else {
+      this.setState({ redirectToHome:true })
+    }
+  }
 
   render() {
 
@@ -137,6 +126,17 @@ class Slideshow extends Component {
         return (
 
           <div className="slider">
+
+            {(this.props.admin === true) ?
+              <AdminNavbar goHome={this.goHome} />
+              :
+              <UserNavbar goHome={this.goHome} />
+            }
+            <nav>
+              <button onClick={() => this.goHome()}>
+                <i className="ion-ios-home-outline"></i>
+              </button>
+            </nav>
             {posts}
             <div className="slider__indicators"></div>
           </div>
