@@ -247,6 +247,10 @@ input:focus ~ .highlight {
   bottom: 0;
   width: 90%;
   background: rgba(0,0,0,0.8);
+  transition: 0.2s;
+}
+.home_background > .best_slideshow > .content > .slideshow:hover{
+  cursor: pointer;
 }
 
 
