@@ -1,5 +1,5 @@
 import React from 'react'
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 import USER_CONNEXION from './components/pages/USER_CONNEXION'
 import SLIDESHOW from './components/pages/SLIDESHOW'
 import ADMIN_CONNEXION from './components/pages/ADMIN_CONNEXION'

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { database } from '../firebase'
 import { Redirect } from 'react-router'
 import Loader from './Loader'
 

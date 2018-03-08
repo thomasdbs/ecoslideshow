@@ -1,5 +1,3 @@
-import { addSlide } from './AddSlide'
-
 export const uploadFile = () => {
 
   const filesSelected = document.querySelector('#inputFileToLoad').files

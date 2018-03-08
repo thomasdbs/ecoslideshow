@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { uploadFile } from './adminFunctions/UploadFile'
-import { deleteSlide } from './adminFunctions/DeleteSlide'
 import { addSlide } from './adminFunctions/AddSlide'
+import { updateSlide } from './adminFunctions/UpdateSlide'
 import UserNavbar from './nav/UserNavbar'
 import AdminNavbar from './nav/AdminNavbar'
 
@@ -10,17 +9,22 @@ class Slide extends Component {
   state = {
     picture:null,
     addSlide:false,
+    editSlide:false,
     title:this.props.details.text
   }
 
   addSlide = () => {
     this.setState({ addSlide:true, title:'Mon titre', picture:'' })
-    this.props.addSlide()
+    this.props.stopSlideAnimation()
   }
 
-  deleteNewSlide = () => {
-    this.setState({ addSlide:false , title:this.props.details.text })
-    this.props.deleteNewSlide()
+  startEditSlide = () => {
+    this.setState({ editSlide:true, picture:'' })
+  }
+
+  removeSlideForm = () => {
+    this.setState({ addSlide:false , title:this.props.details.text, editSlide:false })
+    this.props.restartSlideAnimation()
   }
 
   uploadFile = () => {
@@ -44,7 +48,23 @@ class Slide extends Component {
   }
 
   submitSlide = () => {
-    addSlide(this.state.picture,this.state.title, this.props.numberOfSlides)
+    if (this.state.picture !== null && this.state.title !== '') {
+      addSlide(this.state.picture,this.state.title, this.props.numberOfSlides)
+    }else {
+      alert('merci de choisir une photo et un titre')
+    }
+  }
+
+  submitEdit = () => {
+    if (this.state.title !== '') {
+      if (this.state.picture === '') {
+        updateSlide(this.props.details.id,this.props.details.picture,this.state.title)
+      }else {
+        updateSlide(this.props.details.id,this.state.picture,this.state.title)
+      }
+    }else {
+      alert('merci de renseigner un titre')
+    }
   }
 
   render() {
@@ -55,9 +75,15 @@ class Slide extends Component {
     }
 
     let backgroundImage = 'none'
-    if (this.state.addSlide === false) {
+    if (this.state.addSlide === false && this.state.editSlide === false) {
       backgroundImage = `url(${this.props.details.picture})`
-    }else if (this.state.picture !== null) {
+    }else if (this.state.editSlide === true) {
+      if (this.state.picture !== '') {
+        backgroundImage = `url(${this.state.picture})`
+      }else {
+        backgroundImage = `url(${this.props.details.picture})`
+      }
+    }else if (this.state.addSlide === true && this.state.picture !== '') {
       backgroundImage = `url(${this.state.picture})`
     }
 
@@ -76,9 +102,12 @@ class Slide extends Component {
               slide={this.props.details.id}
               goHome={this.props.goHome}
               isNewSlide={this.state.addSlide}
-              deleteNewSlide={this.deleteNewSlide}
+              removeSlideForm={this.removeSlideForm}
               uploadFile={this.uploadFile}
               submitSlide={this.submitSlide}
+              submitEdit={this.submitEdit}
+              editSlide={this.state.editSlide}
+              startEditSlide={this.startEditSlide}
             />
           )}
 
@@ -88,7 +117,7 @@ class Slide extends Component {
 
           <div className="slider__content">
 
-            {(this.state.addSlide === false) ?
+            {(this.state.addSlide === false && this.state.editSlide === false) ?
               <h1>{this.state.title}</h1>
               :
               <input

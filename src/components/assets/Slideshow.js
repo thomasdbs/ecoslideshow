@@ -37,18 +37,18 @@ class Slideshow extends Component {
     })
   }
 
-  addSlideshow = (pseudo, admin_password, name) => {
-    database.ref('/').push().pseudo
-    const model = this.slideshowStructure(admin_password, pseudo, name)
-    return database.ref('/'+ pseudo).set(model)
-  }
-
-  slideshowStructure = (admin_password, pseudo, name) => ({
-    admin_password: admin_password,
-    id: pseudo,
-    name: name,
-    slides: []
-  })
+  // addSlideshow = (pseudo, admin_password, name) => {
+  //   database.ref('/').push().pseudo
+  //   const model = this.slideshowStructure(admin_password, pseudo, name)
+  //   return database.ref('/'+ pseudo).set(model)
+  // }
+  //
+  // slideshowStructure = (admin_password, pseudo, name) => ({
+  //   admin_password: admin_password,
+  //   id: pseudo,
+  //   name: name,
+  //   slides: []
+  // })
 
   componentDidMount() {
     this.getSlideshow(this.props.slideshow)
@@ -106,11 +106,11 @@ class Slideshow extends Component {
     }
   }
 
-  addSlide = () => {
+  stopSlideAnimation = () => {
     this.setState({ addSlide:true })
   }
 
-  deleteNewSlide = () => {
+  restartSlideAnimation = () => {
     this.setState({ addSlide:false })
   }
 
@@ -136,7 +136,7 @@ class Slideshow extends Component {
         .keys(this.state.slides)
         .map(key =>
           <Slide
-            addSlide={this.addSlide}
+            stopSlideAnimation={this.stopSlideAnimation}
             numberOfSlides={Object.keys(this.state.slides).length}
             i={i++}
             key={key}
@@ -144,7 +144,7 @@ class Slideshow extends Component {
             changeSlide={this.changeSlide}
             admin={this.props.admin}
             goHome={this.goHome}
-            deleteNewSlide={this.deleteNewSlide}
+            restartSlideAnimation={this.restartSlideAnimation}
           />
         )
 
