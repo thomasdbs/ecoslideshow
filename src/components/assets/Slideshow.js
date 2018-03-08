@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import Slide from './Slide'
 import { database } from '../firebase'
 import { Redirect } from 'react-router'
-import UserNavbar from './UserNavbar'
-import AdminNavbar from './AdminNavbar'
 
 class Slideshow extends Component {
 
@@ -120,23 +118,21 @@ class Slideshow extends Component {
         let i = 0
         const posts = Object
         .keys(this.state.slides)
-        .map(key => <Slide i={i++} key={key} details={this.state.slides[key]} changeSlide={this.changeSlide} admin={this.props.admin} />)
-        ;
+        .map(key =>
+          <Slide
+            numberOfSlides={Object.keys(this.state.slides).length}
+            i={i++}
+            key={key}
+            details={this.state.slides[key]}
+            changeSlide={this.changeSlide}
+            admin={this.props.admin}
+            goHome={this.goHome}
+          />
+        )
 
         return (
 
           <div className="slider">
-
-            {(this.props.admin === true) ?
-              <AdminNavbar goHome={this.goHome} />
-              :
-              <UserNavbar goHome={this.goHome} />
-            }
-            <nav>
-              <button onClick={() => this.goHome()}>
-                <i className="ion-ios-home-outline"></i>
-              </button>
-            </nav>
             {posts}
             <div className="slider__indicators"></div>
           </div>

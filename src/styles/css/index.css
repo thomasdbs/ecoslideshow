@@ -4,11 +4,80 @@ body {
   margin: 0;
 }
 
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
 nav {
   position: absolute;
   right: 20px;
   top: 20px;
-  z-index: 4;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+i {
+  font-size: 16px;
+}
+
+.tooltip, .file-upload {
+  z-index: 2;
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  margin: 4px 0;
+  cursor: pointer;
+  background: white;
+  border: none;
+  outline: none;
+}
+
+.tooltip .tooltiptext, .file-upload .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 2;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    top: -2px;
+    bottom: auto;
+    right: 140%;
+}
+
+.tooltip .tooltiptext::after, .file-upload .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #555;
+}
+
+.tooltip:hover .tooltiptext, .file-upload:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
 
 .admin_background{

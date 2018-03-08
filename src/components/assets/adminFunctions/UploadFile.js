@@ -1,6 +1,6 @@
 import { addSlide } from './AddSlide'
 
-export const uploadFile = () => {
+export const uploadFile = numberOfSlides => {
 
   const filesSelected = document.querySelector('#inputFileToLoad').files;
 
@@ -11,7 +11,7 @@ export const uploadFile = () => {
 
     fileReader.onload = (fileLoadedEvent) => {
       var srcData = fileLoadedEvent.target.result;
-      addSlide(localStorage.getItem("ecoslideshow_slideshow"), srcData, 'Another Firebase Slide')
+      addSlide(srcData, 'Another Firebase Slide', numberOfSlides)
     }
 
     fileReader.readAsDataURL(fileToLoad);

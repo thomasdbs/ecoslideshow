@@ -1,23 +1,12 @@
 import { database } from '../../firebase'
+import { unicKey } from './UnicKey'
 
-export const addSlide = (id, picture, name) => {
+export const addSlide = (picture, name, numberOfSlides) => {
 
-  return new Promise((resolve, reject) => {
+  const unicID = unicKey() + unicKey() + '-' + unicKey() + '-' + unicKey() + '-' + unicKey() + '-' + unicKey() + unicKey() + unicKey()
 
-    database.ref(`/${id}`).once('value').then((slide) => {
+  const slidePositionKey = numberOfSlides + unicID
 
-      let slides = slide.child('slides').val() || []
-
-      let key = database.ref(`/${id}`).push().key
-
-      slides.push({ id:key, picture:picture, text:name })
-
-      database.ref(`/${id}/slides`).set(slides)
-      .then( res => {resolve(res)})
-      .catch( error => {reject(error)})
-
-    })
-
-  })
+  return database.ref(`/${localStorage.getItem("ecoslideshow_slideshow")}/slides/${slidePositionKey}`).set({ id:slidePositionKey, picture:picture, text:name })
 
 }

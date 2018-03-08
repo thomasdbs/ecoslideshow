@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { uploadFile } from './adminFunctions/UploadFile'
 import { deleteSlide } from './adminFunctions/DeleteSlide'
+import UserNavbar from './UserNavbar'
+import AdminNavbar from './AdminNavbar'
 
 class Slide extends Component {
 
@@ -24,19 +26,26 @@ class Slide extends Component {
 
     return (
 
-        <div className={isActive} data-slide={this.props.i+1}>
-          <div className="slider__wrap slider__wrap--hacked" >
-            <div className="slider__back" style={{ backgroundImage: `url(${this.props.details.picture})` }}></div>
-          </div>
-          <div className="slider__inner"  style={{ backgroundImage: `url(${this.props.details.picture})` }}>
-            <div className="slider__content">
-              <input id="inputFileToLoad" type="file" onChange={() => uploadFile()}/>
-              <button onClick={() => deleteSlide(this.props.i)}>D</button>
-              <div dangerouslySetInnerHTML={{__html: labelH1}}></div>
-              <a onClick={ () => this.props.changeSlide()} className="go-to-next">next</a>
-            </div>
+      <div className={isActive} data-slide={this.props.i+1}>
+        <div className="slider__wrap slider__wrap--hacked" >
+          <div className="slider__back" style={{ backgroundImage: `url(${this.props.details.picture})` }}></div>
+        </div>
+        <div className="slider__inner"  style={{ backgroundImage: `url(${this.props.details.picture})` }}>
+
+          {(this.props.admin === true) && (
+            <AdminNavbar numberOfSlides={this.props.numberOfSlides} slide={this.props.details.id} goHome={this.props.goHome} />
+          )}
+
+          {(this.props.admin !== true) && (
+            <UserNavbar goHome={this.props.goHome} />
+          )}
+
+          <div className="slider__content">
+            <div dangerouslySetInnerHTML={{__html: labelH1}}></div>
+            <a onClick={ () => this.props.changeSlide()} className="go-to-next">next</a>
           </div>
         </div>
+      </div>
 
     )
 
