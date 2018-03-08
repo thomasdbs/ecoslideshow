@@ -180,12 +180,24 @@ input:focus ~ .highlight {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  background: no-repeat;
+  width: 90%;
+  background: none;
   color: white;
   font-size: 20px;
   padding: 0;
   padding-bottom: 10px;
+}
+.home_background > .open_slideshow > button{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10%;
+  background: white;
+  color: black;
+  font-size: 17px;
+  padding: 0;
+  height: 16%;
+  border: none;
 }
 .home_background > .best_slideshow{
   position: relative;
@@ -213,11 +225,28 @@ input:focus ~ .highlight {
   overflow: none;
 }
 .home_background > .best_slideshow > .content > .slideshow{
+  position: relative;
   background: rgb(61, 61, 61);
   width: 400px;
   height: 100%;
   margin-right: 40px;
   display: inline-block;
+  background-image: url('https://www.wallpapersbrowse.com/images/5y/5yyxhbv.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.home_background > .best_slideshow > .content > .slideshow > .name{
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px;
+  padding-left: 5%;
+  padding-right: 5%;
+  bottom: 0;
+  width: 90%;
+  background: rgba(0,0,0,0.8);
 }
 
 

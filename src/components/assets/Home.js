@@ -46,14 +46,12 @@ class Home extends Component {
             <div className="home_background">
                 <div className="open_slideshow">
                     <input type="text" placeholder="Entrez l'ID de votre slideshow pour y accéder" />
+                    <button>Valider</button>
                 </div>
                 <div className="best_slideshow">
                     <div className="title">Vos meilleures créations du moment</div>
                     <div className="content">
-                        <div className="slideshow"></div>
-                        <div className="slideshow"></div>
-                        <div className="slideshow"></div>
-                        <div className="slideshow"></div>
+                        <div className="slideshow"><div className="name">Slideshow japonais</div></div>
                     </div>
                 </div>
             </div>
