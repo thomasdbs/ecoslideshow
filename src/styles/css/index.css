@@ -158,6 +158,69 @@ input:focus ~ .highlight {
   to 	{ width:0; background:transparent; }
 }
 
+.home_background{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: pink;
+  background-image: url('http://splitshire.com/wp-content/uploads/2014/11/SplitShire-03692.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.home_background > .open_slideshow{
+  position: relative;
+  margin-left: 5%;
+  width: 90%;
+  height: 40%;
+  border-bottom: solid 1px white;
+}
+.home_background > .open_slideshow > input[type="text"]{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: no-repeat;
+  color: white;
+  font-size: 20px;
+  padding: 0;
+  padding-bottom: 10px;
+}
+.home_background > .best_slideshow{
+  position: relative;
+  width: 100%;
+  height: 60%;
+  overflow-x: scroll;
+}
+.home_background > .best_slideshow > .title{
+  position: fixed;
+  width: 90%;
+  margin-top: 12vh;
+  margin-left: 5%;
+  height: auto;
+  padding-bottom: 5px;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+  font-weight: bold;
+}
+.home_background > .best_slideshow > .content{
+  position: absolute;
+  width: max-content;
+  margin-top: 20vh;
+  margin-left: 5%;
+  height: 60%;
+  overflow: none;
+}
+.home_background > .best_slideshow > .content > .slideshow{
+  background: rgb(61, 61, 61);
+  width: 400px;
+  height: 100%;
+  margin-right: 40px;
+  display: inline-block;
+}
+
+
 
 .slider {
   position: relative;
