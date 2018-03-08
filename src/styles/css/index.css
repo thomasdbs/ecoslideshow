@@ -4,10 +4,18 @@ body {
   margin: 0;
 }
 
+.description {
+  margin-bottom: 40px;
+}
+
 .loader {
   position: absolute;
   top: 50%;
   left: 48%;
+}
+
+.p {
+  font-size: 16px !important;
 }
 
 .line {
@@ -75,7 +83,7 @@ nav {
 }
 
 i {
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .tooltip, .file-upload {
@@ -88,6 +96,8 @@ i {
   background: white;
   border: none;
   outline: none;
+  color: black;
+  text-align: center;
 }
 
 .tooltip .tooltiptext, .file-upload .tooltiptext {
@@ -337,6 +347,10 @@ input:focus ~ .highlight {
               background: none;
               border: none;
               width: 100%;
+              color: white;
+            }
+            .slider__input::placeholder {
+              color: white;
             }
             .slider__content h1 {
               font-weight: 900;

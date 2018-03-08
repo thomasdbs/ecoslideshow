@@ -6,6 +6,12 @@ class AdminNavbar extends Component {
 
   render() {
 
+    const url = this.props.a
+    let link = false
+    if (url.includes("http") === true) {
+      link = true
+    }
+
     return (
       <nav>
 
@@ -14,6 +20,15 @@ class AdminNavbar extends Component {
             function={this.props.goHome}
             tooltip="Accueil"
             icon="ion-ios-home-outline"
+          />
+        )}
+
+        {(this.props.isNewSlide === false && this.props.editSlide === false && link === true) && (
+          <NavItem
+            link={url}
+            tooltip="Lien"
+            icon="ion-ios-world-outline"
+            isLink={true}
           />
         )}
 
