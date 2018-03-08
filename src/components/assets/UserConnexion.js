@@ -39,7 +39,12 @@ class UserConnexion extends Component {
     }else {
       if (this.state.loading === true) {
         return (
-          <div>Waiting</div>
+          <div class="loader">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
         )
       }else {
         return (
