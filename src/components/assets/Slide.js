@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { uploadFile } from './adminFunctions/UploadFile'
 import { deleteSlide } from './adminFunctions/DeleteSlide'
-import UserNavbar from './UserNavbar'
-import AdminNavbar from './AdminNavbar'
+import UserNavbar from './nav/UserNavbar'
+import AdminNavbar from './nav/AdminNavbar'
 
 class Slide extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import NavItem from './NavItem'
-import { deleteSlide } from './adminFunctions/DeleteSlide'
-import { uploadFile } from './adminFunctions/UploadFile'
+import { deleteSlide } from '../adminFunctions/DeleteSlide'
+import { uploadFile } from '../adminFunctions/UploadFile'
 
 class AdminNavbar extends Component {
 

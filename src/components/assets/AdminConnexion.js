@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { auth } from '../firebase'
 import { Redirect } from 'react-router'
+import Loader from './Loader'
 
 class UserConnexion extends Component {
 
@@ -73,7 +74,7 @@ class UserConnexion extends Component {
     }else {
       if (this.state.loading === true) {
         return (
-          <div>Waiting</div>
+          <Loader />
         )
       }else {
         return (

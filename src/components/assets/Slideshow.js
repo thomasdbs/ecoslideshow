@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Slide from './Slide'
 import { database } from '../firebase'
 import { Redirect } from 'react-router'
+import Loader from './Loader'
 
 class Slideshow extends Component {
 
@@ -111,7 +112,7 @@ class Slideshow extends Component {
     }else {
       if (Object.keys(this.state.slides).length === 0 && this.state.loading === true) {
         return (
-          <div>Waiting</div>
+          <Loader />
         )
       }else {
 

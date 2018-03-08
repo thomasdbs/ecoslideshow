@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Slideshow from '../assets/Slideshow'
 import { Redirect } from 'react-router'
+import Loader from '../assets/Loader'
 
 class SLIDESHOW extends Component {
 
@@ -65,7 +66,7 @@ class SLIDESHOW extends Component {
     }else if (this.state.redirectToAdmin === true) {
       return <Redirect to="/admin" />
     }else if (this.state.loading === true) {
-      return <div>Waiting</div>
+      return <Loader />
     }else {
       return <Slideshow admin={this.state.admin} slideshow={this.props.match.params.id} />
     }
